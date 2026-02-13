@@ -17,7 +17,8 @@ import java.util.List;
 )
 public class Main implements Runnable {
 
-    @Option(names = {"-o", "--options"}, defaultValue = "/", description = "Specifies the folder path where the output files will be written.")
+    @Option(names = {"-o", "--options"}, defaultValue = "/", description = "Specifies the folder path where the " +
+            "output files will be written.")
     String options;
 
     @Option(names = {"-p", "--prefix"}, defaultValue = "", description = "Sets the prefix for output file names. " +
@@ -31,11 +32,13 @@ public class Main implements Runnable {
     boolean appendMode;
 
     static class StatsMode {
-        @Option(names = {"-s", "--short"}, description = "Collect short statistics. Short statistics include only the count of elements written to the output files.")
+        @Option(names = {"-s", "--short"}, description = "Collect short statistics. Short statistics include only " +
+                "the count of elements written to the output files.")
         boolean shortStats;
 
-        @Option(names = {"-f", "--full"}, description = "Collect full statistics. Full statistics for numbers include minimum, maximum, sum, and average. " +
-                "Full statistics for strings include count, length of the shortest string, and length of the longest string.")
+        @Option(names = {"-f", "--full"}, description = "Collect full statistics. Full statistics for numbers " +
+                "include minimum, maximum, sum, and average. Full statistics for strings include count, length of " +
+                "the shortest string, and length of the longest string.")
         boolean fullStats;
     }
 
