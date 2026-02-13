@@ -1,0 +1,22 @@
+plugins {
+    id 'java'
+}
+
+group = 'org.ftc'
+version = '1.0.0'
+
+java {
+    sourceCompatibility = '25'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+test {
+    useJUnitPlatform()
+}
