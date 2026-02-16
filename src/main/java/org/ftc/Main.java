@@ -46,11 +46,12 @@ public class Main implements Runnable {
     StatsMode mode;
 
     @Parameters(arity = "1..*", description = "Names of files containing a mix of integers, floats, and strings.")
-    List<String> files;
+    List<String> inputFilesPaths;
 
     @Override
     public void run() {
-        System.out.println(appendMode);
+        SortStringsProcessor sortStringsProcessor = new SortStringsProcessor(inputFilesPaths);
+        sortStringsProcessor.process();
     }
 
     static void main(String[] args) {

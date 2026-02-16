@@ -77,24 +77,24 @@ public class StateAnalyzer implements IAnalyzer {
         return CharClass.OTHER;
     }
 
-    public ValueType analyze(String s) {
-        if (s == null || s.isEmpty()) return ValueType.STRING;
+    public StringType analyze(String s) {
+        if (s == null || s.isEmpty()) return StringType.STRING;
 
         State state = State.START;
 
         for (int i = 0; i < s.length(); i++) {
             CharClass cc = classify(s.charAt(i));
             Map<CharClass, State> row = TRANSITIONS.get(state);
-            if (row == null) return ValueType.STRING;
+            if (row == null) return StringType.STRING;
 
             State next = row.get(cc);
-            if (next == null) return ValueType.STRING;
+            if (next == null) return StringType.STRING;
 
             state = next;
         }
 
-        if (ACCEPT_INT.contains(state)) return ValueType.INTEGER;
-        if (ACCEPT_FLOAT.contains(state)) return ValueType.FLOAT;
-        return ValueType.STRING;
+        if (ACCEPT_INT.contains(state)) return StringType.INTEGER;
+        if (ACCEPT_FLOAT.contains(state)) return StringType.FLOAT;
+        return StringType.STRING;
     }
 }

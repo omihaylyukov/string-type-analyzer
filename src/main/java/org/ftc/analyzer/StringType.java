@@ -1,6 +1,6 @@
 package org.ftc.analyzer;
 
-public enum ValueType {
+public enum StringType {
     FLOAT,
     INTEGER,
     STRING
