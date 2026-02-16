@@ -8,6 +8,7 @@
 * Java 25
 * Gradle 9.2.0
 * [Picocli 4.7.7](https://mvnrepository.com/artifact/info.picocli/picocli/4.7.7)
+* [JUnit Jupiter 6.0.2](https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter/6.0.2)
 
 ## Как собрать
 
