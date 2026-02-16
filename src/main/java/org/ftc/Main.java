@@ -17,9 +17,9 @@ import java.util.List;
 )
 public class Main implements Runnable {
 
-    @Option(names = {"-o", "--options"}, defaultValue = "/", description = "Specifies the folder path where the " +
+    @Option(names = {"-o", "--output"}, defaultValue = "", description = "Specifies the folder path where the " +
             "output files will be written.")
-    String options;
+    String output;
 
     @Option(names = {"-p", "--prefix"}, defaultValue = "", description = "Sets the prefix for output file names. " +
             "For example, -p result_ will produce files like result_integers.txt, result_floats.txt, etc.")
@@ -50,7 +50,12 @@ public class Main implements Runnable {
 
     @Override
     public void run() {
-        SortStringsProcessor sortStringsProcessor = new SortStringsProcessor(inputFilesPaths);
+        SortStringsProcessor sortStringsProcessor = new SortStringsProcessor(
+                output,
+                prefix,
+                appendMode,
+                inputFilesPaths
+        );
         sortStringsProcessor.process();
     }
 
