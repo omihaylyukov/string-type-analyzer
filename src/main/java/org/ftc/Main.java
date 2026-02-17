@@ -1,6 +1,6 @@
 package org.ftc;
 
-import org.ftc.processor.SortStringsProcessor;
+import org.ftc.processor.StringsProcessor;
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
@@ -51,14 +51,14 @@ public class Main implements Runnable {
 
     @Override
     public void run() {
-        SortStringsProcessor sortStringsProcessor = new SortStringsProcessor(
+        StringsProcessor stringsProcessor = new StringsProcessor(
                 output,
                 prefix,
                 appendMode,
                 inputFilesPaths,
                 statsMode
         );
-        sortStringsProcessor.process();
+        stringsProcessor.process();
     }
 
     static void main(String[] args) {

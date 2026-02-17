@@ -22,15 +22,15 @@ import java.util.Map;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 
-public class SortStringsProcessor {
+public class StringsProcessor {
 
     private final List<String> inputFilesPaths;
-    private final IAnalyzer analyzer;
+    private final StringProcessor stringProcessor;
     private final Map<StringType, BlockingQueue<QueueItem>> queueMap;
     private final List<BlockingQueueWriter> writers;
     private final Map<StringType, IStatisticsCollector> statisticsMap;
 
-    public SortStringsProcessor(String output, String prefix, boolean appendMode, List<String> inputFilesPaths, Main.StatsMode statsMode) {
+    public StringsProcessor(String output, String prefix, boolean appendMode, List<String> inputFilesPaths, Main.StatsMode statsMode) {
         this.inputFilesPaths = inputFilesPaths;
 
         String outputPath;
@@ -41,7 +41,6 @@ public class SortStringsProcessor {
         }
         outputPath += prefix;
 
-        this.analyzer = new StateAnalyzer();
         this.queueMap = new HashMap<>();
         this.writers = new ArrayList<>();
 
@@ -72,6 +71,7 @@ public class SortStringsProcessor {
             statisticsMap.put(StringType.STRING, new StringStatisticsCollector(printStream));
         }
 
+        this.stringProcessor = new StringProcessor(new StateAnalyzer(), queueMap, statisticsMap);
     }
 
     public void process() {
@@ -83,7 +83,7 @@ public class SortStringsProcessor {
             try (BufferedReader br = new BufferedReader(new FileReader(path))) {
                 String line;
                 while ((line = br.readLine()) != null) {
-                    process(line);
+                    stringProcessor.process(line);
                 }
             } catch (IOException e) {
                 System.out.println("WARNING! File " + path + " not found!");
@@ -94,22 +94,12 @@ public class SortStringsProcessor {
             try {
                 queue.put(QueueItem.poisonPill());
             } catch (InterruptedException e) {
-                throw new RuntimeException(e);
+                Thread.currentThread().interrupt();
             }
         }
 
         for (IStatisticsCollector statisticsCollector: statisticsMap.values()) {
             statisticsCollector.printStatistics();
         }
-    }
-
-    private void process(String str) {
-        StringType stringType = analyzer.analyze(str);
-        try {
-            queueMap.get(stringType).put(new QueueItem(str));
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-        statisticsMap.get(stringType).collect(str);
     }
 }

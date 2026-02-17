@@ -1,6 +1,5 @@
 package org.ftc.processor.statistics;
 
-import org.ftc.processor.statistics.NumberStatisticsCollector;
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayOutputStream;
