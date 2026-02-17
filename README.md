@@ -9,6 +9,7 @@
 * Gradle 9.2.0
 * [Picocli 4.7.7](https://mvnrepository.com/artifact/info.picocli/picocli/4.7.7)
 * [JUnit Jupiter 6.0.2](https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter/6.0.2)
+* [Mockito Core 5.21.0](https://mvnrepository.com/artifact/org.mockito/mockito-core/5.21.0)
 
 ## Как собрать
 
