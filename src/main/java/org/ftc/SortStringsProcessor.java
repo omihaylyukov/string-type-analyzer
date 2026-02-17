@@ -3,12 +3,17 @@ package org.ftc;
 import org.ftc.analyzer.IAnalyzer;
 import org.ftc.analyzer.StateAnalyzer;
 import org.ftc.analyzer.StringType;
+import org.ftc.statistics.CountStatisticsCollector;
+import org.ftc.statistics.IStatisticsCollector;
+import org.ftc.statistics.NumberStatisticsCollector;
+import org.ftc.statistics.StringStatisticsCollector;
 import org.ftc.writer.BlockingQueueWriter;
 import org.ftc.writer.QueueItem;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -22,12 +27,10 @@ public class SortStringsProcessor {
     private final IAnalyzer analyzer;
     private final Map<StringType, BlockingQueue<QueueItem>> queueMap;
     private final List<BlockingQueueWriter> writers;
+    private final Map<StringType, IStatisticsCollector> statisticsMap;
 
-    public SortStringsProcessor(String output, String prefix, boolean appendMode, List<String> inputFilesPaths) {
+    public SortStringsProcessor(String output, String prefix, boolean appendMode, List<String> inputFilesPaths, Main.StatsMode statsMode) {
         this.inputFilesPaths = inputFilesPaths;
-        this.analyzer = new StateAnalyzer();
-        queueMap = new HashMap<>();
-        writers = new ArrayList<>();
 
         String outputPath;
         if (output.isEmpty()) {
@@ -36,6 +39,10 @@ public class SortStringsProcessor {
             outputPath = output + "/";
         }
         outputPath += prefix;
+
+        this.analyzer = new StateAnalyzer();
+        this.queueMap = new HashMap<>();
+        this.writers = new ArrayList<>();
 
         BlockingQueue<QueueItem> integerQueue = new ArrayBlockingQueue<>(20);
         queueMap.put(StringType.INTEGER, integerQueue);
@@ -51,6 +58,19 @@ public class SortStringsProcessor {
         queueMap.put(StringType.STRING, stringQueue);
         BlockingQueueWriter stringWriter = new BlockingQueueWriter(outputPath + "strings.txt", appendMode, stringQueue);
         writers.add(stringWriter);
+
+        this.statisticsMap = new HashMap<>();
+        PrintStream printStream = new PrintStream(System.out);
+        if (statsMode.shortStats) {
+            statisticsMap.put(StringType.INTEGER, new CountStatisticsCollector("Integer statistics:", printStream));
+            statisticsMap.put(StringType.FLOAT, new CountStatisticsCollector("Float statistics:", printStream));
+            statisticsMap.put(StringType.STRING, new CountStatisticsCollector("String statistics:", printStream));
+        } else {
+            statisticsMap.put(StringType.INTEGER, new NumberStatisticsCollector("Integer statistics:", printStream));
+            statisticsMap.put(StringType.FLOAT, new NumberStatisticsCollector("Float statistics:", printStream));
+            statisticsMap.put(StringType.STRING, new StringStatisticsCollector(printStream));
+        }
+
     }
 
     public void process() {
@@ -76,6 +96,10 @@ public class SortStringsProcessor {
                 throw new RuntimeException(e);
             }
         }
+
+        for (IStatisticsCollector statisticsCollector: statisticsMap.values()) {
+            statisticsCollector.printStatistics();
+        }
     }
 
     private void process(String str) {
@@ -85,5 +109,6 @@ public class SortStringsProcessor {
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
+        statisticsMap.get(stringType).collect(str);
     }
 }

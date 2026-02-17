@@ -19,19 +19,19 @@ public class Main implements Runnable {
 
     @Option(names = {"-o", "--output"}, defaultValue = "", description = "Specifies the folder path where the " +
             "output files will be written.")
-    String output;
+    private String output;
 
     @Option(names = {"-p", "--prefix"}, defaultValue = "", description = "Sets the prefix for output file names. " +
             "For example, -p result_ will produce files like result_integers.txt, result_floats.txt, etc.")
-    String prefix;
+    private String prefix;
 
     @Option(
             names = {"-a", "--append-mode"},
             description = "Append to existing files instead of overwriting."
     )
-    boolean appendMode;
+    private boolean appendMode;
 
-    static class StatsMode {
+    public static class StatsMode {
         @Option(names = {"-s", "--short"}, description = "Collect short statistics. Short statistics include only " +
                 "the count of elements written to the output files.")
         boolean shortStats;
@@ -43,10 +43,10 @@ public class Main implements Runnable {
     }
 
     @ArgGroup(multiplicity = "1")
-    StatsMode mode;
+    private StatsMode statsMode;
 
     @Parameters(arity = "1..*", description = "Names of files containing a mix of integers, floats, and strings.")
-    List<String> inputFilesPaths;
+    private List<String> inputFilesPaths;
 
     @Override
     public void run() {
@@ -54,7 +54,8 @@ public class Main implements Runnable {
                 output,
                 prefix,
                 appendMode,
-                inputFilesPaths
+                inputFilesPaths,
+                statsMode
         );
         sortStringsProcessor.process();
     }
