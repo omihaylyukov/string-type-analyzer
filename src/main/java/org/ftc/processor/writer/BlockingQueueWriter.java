@@ -1,4 +1,4 @@
-package org.ftc.writer;
+package org.ftc.processor.writer;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;

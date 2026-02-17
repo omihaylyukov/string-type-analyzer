@@ -1,5 +1,6 @@
 package org.ftc;
 
+import org.ftc.processor.SortStringsProcessor;
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
@@ -34,12 +35,12 @@ public class Main implements Runnable {
     public static class StatsMode {
         @Option(names = {"-s", "--short"}, description = "Collect short statistics. Short statistics include only " +
                 "the count of elements written to the output files.")
-        boolean shortStats;
+        public boolean shortStats;
 
         @Option(names = {"-f", "--full"}, description = "Collect full statistics. Full statistics for numbers " +
                 "include minimum, maximum, sum, and average. Full statistics for strings include count, length of " +
                 "the shortest string, and length of the longest string.")
-        boolean fullStats;
+        public boolean fullStats;
     }
 
     @ArgGroup(multiplicity = "1")

@@ -1,5 +1,7 @@
-package org.ftc.analyzer;
+package org.ftc.processor.analyzer;
 
+import org.ftc.processor.analyzer.StateAnalyzer;
+import org.ftc.processor.analyzer.StringType;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

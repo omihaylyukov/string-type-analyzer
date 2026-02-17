@@ -1,4 +1,4 @@
-package org.ftc.analyzer;
+package org.ftc.processor.analyzer;
 
 import java.util.EnumSet;
 import java.util.HashMap;

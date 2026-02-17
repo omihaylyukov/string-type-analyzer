@@ -1,4 +1,4 @@
-package org.ftc.writer;
+package org.ftc.processor.writer;
 
 public class QueueItem {
     private final String value;

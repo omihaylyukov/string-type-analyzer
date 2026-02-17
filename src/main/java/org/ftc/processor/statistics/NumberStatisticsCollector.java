@@ -1,4 +1,4 @@
-package org.ftc.statistics;
+package org.ftc.processor.statistics;
 
 import java.io.PrintStream;
 import java.math.BigDecimal;

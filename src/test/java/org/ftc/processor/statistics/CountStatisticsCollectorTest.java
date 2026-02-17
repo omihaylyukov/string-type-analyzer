@@ -1,5 +1,6 @@
-package org.ftc.statistics;
+package org.ftc.processor.statistics;
 
+import org.ftc.processor.statistics.CountStatisticsCollector;
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayOutputStream;

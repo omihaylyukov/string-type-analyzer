@@ -1,14 +1,15 @@
-package org.ftc;
+package org.ftc.processor;
 
-import org.ftc.analyzer.IAnalyzer;
-import org.ftc.analyzer.StateAnalyzer;
-import org.ftc.analyzer.StringType;
-import org.ftc.statistics.CountStatisticsCollector;
-import org.ftc.statistics.IStatisticsCollector;
-import org.ftc.statistics.NumberStatisticsCollector;
-import org.ftc.statistics.StringStatisticsCollector;
-import org.ftc.writer.BlockingQueueWriter;
-import org.ftc.writer.QueueItem;
+import org.ftc.Main;
+import org.ftc.processor.analyzer.IAnalyzer;
+import org.ftc.processor.analyzer.StateAnalyzer;
+import org.ftc.processor.analyzer.StringType;
+import org.ftc.processor.statistics.CountStatisticsCollector;
+import org.ftc.processor.statistics.IStatisticsCollector;
+import org.ftc.processor.statistics.NumberStatisticsCollector;
+import org.ftc.processor.statistics.StringStatisticsCollector;
+import org.ftc.processor.writer.BlockingQueueWriter;
+import org.ftc.processor.writer.QueueItem;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
