@@ -21,6 +21,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class StringsProcessor {
 
@@ -75,31 +77,33 @@ public class StringsProcessor {
     }
 
     public void process() {
-        for (BlockingQueueWriter writer: writers) {
-            new Thread(writer).start();
-        }
+        try (ExecutorService executor = Executors.newFixedThreadPool(writers.size())) {
+            for (BlockingQueueWriter writer : writers) {
+                executor.submit(writer);
+            }
 
-        for (String path: inputFilesPaths) {
-            try (BufferedReader br = new BufferedReader(new FileReader(path))) {
-                String line;
-                while ((line = br.readLine()) != null) {
-                    stringProcessor.process(line);
+            for (String path: inputFilesPaths) {
+                try (BufferedReader br = new BufferedReader(new FileReader(path))) {
+                    String line;
+                    while ((line = br.readLine()) != null) {
+                        stringProcessor.process(line);
+                    }
+                } catch (IOException e) {
+                    System.out.println("WARNING! File " + path + " not found!");
                 }
-            } catch (IOException e) {
-                System.out.println("WARNING! File " + path + " not found!");
             }
-        }
 
-        for (BlockingQueue<QueueItem> queue: queueMap.values()) {
-            try {
-                queue.put(QueueItem.poisonPill());
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
+            for (BlockingQueue<QueueItem> queue: queueMap.values()) {
+                try {
+                    queue.put(QueueItem.poisonPill());
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                }
             }
-        }
 
-        for (IStatisticsCollector statisticsCollector: statisticsMap.values()) {
-            statisticsCollector.printStatistics();
+            for (IStatisticsCollector statisticsCollector: statisticsMap.values()) {
+                statisticsCollector.printStatistics();
+            }
         }
     }
 }
