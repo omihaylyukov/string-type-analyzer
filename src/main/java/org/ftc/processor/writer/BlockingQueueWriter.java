@@ -20,12 +20,9 @@ public class BlockingQueueWriter implements Runnable {
     @Override
     public void run() {
         try {
-            while (true) {
+            while (!Thread.currentThread().isInterrupted()) {
                 QueueItem queueItem = queue.take();
                 if (queueItem.isPoison()) {
-                    if (writer != null) {
-                        writer.close();
-                    }
                     return;
                 }
                 if (writer == null) {
@@ -37,6 +34,10 @@ public class BlockingQueueWriter implements Runnable {
             Thread.currentThread().interrupt();
         } catch (IOException e) {
             System.out.println("ERROR! The specified directory does not exist");
+        } finally {
+            if (writer != null) {
+                try { writer.close(); } catch (IOException ignored) {}
+            }
         }
     }
 }
